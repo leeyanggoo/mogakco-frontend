@@ -8,50 +8,62 @@ import {
 } from './styled';
 import HelperText from '@components/HelperText';
 
-interface InputBaseProps extends InputWrapperStyleProps, InputStyleProps {
-  $inputProps?: React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  >;
-}
+// styled-components 외의 props는 input element의 props를 받기 위해 변경
+interface InputBaseProps
+  extends InputWrapperStyleProps,
+    InputStyleProps,
+    React.DetailedHTMLProps<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      HTMLInputElement
+    > {}
 
 interface InputControlProps extends InputBaseProps {
-  $label?: string;
+  $label: string;
   $helperText?: string;
 }
 
-export const InputBase: React.FC<InputBaseProps> = ({
-  $color,
-  $error,
-  $size,
-  $fullWidth,
-  $inputProps = {},
-}) => {
-  return (
-    <InputWrapperStyle
-      $color={$color}
-      $error={$error}
-      $fullWidth={$fullWidth}
-    >
-      <InputStyle
-        $size={$size}
-        {...$inputProps}
-      />
-    </InputWrapperStyle>
-  );
-};
+/**
+ * label이 없는 input 컴포넌트.
+ * @param $ - styled-components prop
+ * @param ...rest - HTMLInputElement의 나머지 props.
+ */
+export const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
+  (props, ref) => {
+    const { $color, $error, $fullWidth, $size, ...rest } = props;
+    return (
+      <InputWrapperStyle
+        $color={$color}
+        $error={$error}
+        $fullWidth={$fullWidth}
+      >
+        <InputStyle
+          $size={$size}
+          ref={ref}
+          {...rest}
+        />
+      </InputWrapperStyle>
+    );
+  }
+);
 
-export const InputControl: React.FC<InputControlProps> = ({
-  $color,
-  $error,
-  $fullWidth,
-  $size,
-  $helperText,
-  $label,
-  $inputProps,
-}) => {
+/**
+ * label이 없는 input 컴포넌트.
+ * @param $ - styled-components prop
+ * @param $label - input 상단 label (필수)
+ * @param $helperText - input의 상태를 나타내는 하단의 도움말 (옵션)
+ * @param ...rest - HTMLInputElement의 나머지 props.
+ */
+export const InputControl = React.forwardRef<
+  HTMLInputElement,
+  InputControlProps
+>((props, ref) => {
+  const { $color, $error, $fullWidth, $size, $helperText, $label, ...rest } =
+    props;
+
+  // 지정한 id가 없는 경우 label과 연동을 위해 생성
   const generatedId = useId();
-  const id = $inputProps?.id || generatedId;
+  const id = rest?.id || generatedId;
+
   return (
     <InputControlStyle $fullWidth={$fullWidth}>
       <label htmlFor={id}>{$label}</label>
@@ -60,7 +72,9 @@ export const InputControl: React.FC<InputControlProps> = ({
         $fullWidth={$fullWidth}
         $color={$color}
         $size={$size}
-        $inputProps={$inputProps}
+        ref={ref}
+        id={id}
+        {...rest}
       />
       {$helperText && (
         <HelperText
@@ -70,4 +84,4 @@ export const InputControl: React.FC<InputControlProps> = ({
       )}
     </InputControlStyle>
   );
-};
+});

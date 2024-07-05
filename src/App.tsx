@@ -6,10 +6,17 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyle from '@styles/Global';
 import theme from '@styles/Theme';
 
+/**
+ * gh-pages deploy를 위해 사용
+ *
+ *  /mogakco-frontend
+ */
+const basename = process.env.PUBLIC_URL || '/';
+
 // TODO: need combine Provider
 function App() {
   return (
-    <BrowserRouter basename='/'>
+    <BrowserRouter basename={basename}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         {appRoutes()}

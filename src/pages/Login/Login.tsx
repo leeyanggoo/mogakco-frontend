@@ -1,41 +1,36 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 import { InputControl } from '@components/Input';
 import Button from '@components/Button';
 
-// TODO: 로그인에 얼마나 validation을 추가할지?
-const schema = z.object({
-  email: z.string().min(1, { message: '이메일을 입력해주세요.' }),
-  password: z.string().min(1, { message: '비밀번호를 입력해주세요.' }),
-});
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
 
-type Schema = z.infer<typeof schema>;
+const defaultValues = {
+  email: '',
+  password: '',
+};
 
 const Login = () => {
   const navigate = useNavigate();
 
   const {
     control,
-    register,
     handleSubmit,
     formState: { errors, isSubmitting, isSubmitted, isDirty, isValid },
     reset,
-  } = useForm<Schema>({
-    defaultValues: {
-      email: '',
-      password: '',
-    },
+  } = useForm<LoginFormValues>({
+    defaultValues: defaultValues,
     mode: 'onSubmit',
-    resolver: zodResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<Schema> = data => {
+  const onSubmit: SubmitHandler<LoginFormValues> = data => {
     alert(JSON.stringify(data));
     // TODO
     // try => navigate('/')
@@ -50,7 +45,7 @@ const Login = () => {
         justifyContent: 'center',
         alignItems: 'center',
         padding: '100px 0',
-        width: '350px',
+        maxWidth: '350px',
         margin: '0 auto',
       }}
     >
@@ -73,29 +68,54 @@ const Login = () => {
         }}
         autoComplete='off'
       >
-        <InputControl
-          $fullWidth
-          $label='이메일'
-          $inputProps={{
-            ...register('email'),
-            id: 'email',
-            autoComplete: 'email',
+        <Controller
+          name='email'
+          control={control}
+          rules={{
+            required: '이메일을 입력해 주세요.',
+            pattern: {
+              // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+              value:
+                /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+              message: '이메일 형식에 맞게 작성해 주세요.',
+            },
           }}
-          $error={!!errors.email}
-          $helperText={errors.email?.message || undefined}
+          render={({ field }) => (
+            <InputControl
+              {...field}
+              type='email'
+              $fullWidth
+              $label='이메일'
+              $error={!!errors.email}
+              $helperText={errors.email?.message}
+              autoComplete='email'
+            />
+          )}
         />
 
-        <InputControl
-          $fullWidth
-          $label='비밀번호'
-          $inputProps={{
-            ...register('password'),
-            id: 'password',
-            type: 'password',
-            autoComplete: 'current-password',
+        <Controller
+          name='password'
+          control={control}
+          rules={{
+            required: '비밀번호를 입력해 주세요.',
+            pattern: {
+              // /^(?=.[!@#$%^&()_+-=[]{};':"\|,.<>/?]).{8,}$/ 특수문자 인식으로 다음과 변경
+              value: /^(?=.*[!@#$%^&()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/,
+              message:
+                '최소 8글자, 적어도 1개 이상의 특수문자가 포함되지 않았습니다.',
+            },
           }}
-          $error={!!errors.password}
-          $helperText={errors.password?.message || undefined}
+          render={({ field }) => (
+            <InputControl
+              {...field}
+              type='password'
+              $fullWidth
+              $label='비밀번호'
+              $error={!!errors.password}
+              $helperText={errors.password?.message}
+              autoComplete='current-password'
+            />
+          )}
         />
 
         <Button
