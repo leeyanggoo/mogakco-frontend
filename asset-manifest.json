@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "https://leeyanggoo.github.io/mogakco-frontend /static/css/main.a3dc69db.css",
-    "main.js": "https://leeyanggoo.github.io/mogakco-frontend /static/js/main.fa4ba9d9.js",
-    "static/js/453.419a5d54.chunk.js": "https://leeyanggoo.github.io/mogakco-frontend /static/js/453.419a5d54.chunk.js",
-    "static/media/PretendardVariable.woff2": "https://leeyanggoo.github.io/mogakco-frontend /static/media/PretendardVariable.2bc582461caf4e05b51d.woff2",
-    "index.html": "https://leeyanggoo.github.io/mogakco-frontend /index.html",
-    "main.a3dc69db.css.map": "https://leeyanggoo.github.io/mogakco-frontend /static/css/main.a3dc69db.css.map",
-    "main.fa4ba9d9.js.map": "https://leeyanggoo.github.io/mogakco-frontend /static/js/main.fa4ba9d9.js.map",
-    "453.419a5d54.chunk.js.map": "https://leeyanggoo.github.io/mogakco-frontend /static/js/453.419a5d54.chunk.js.map"
+    "main.css": "/mogakco-frontend/static/css/main.cac7a327.css",
+    "main.js": "/mogakco-frontend/static/js/main.f99d2e0e.js",
+    "static/js/453.419a5d54.chunk.js": "/mogakco-frontend/static/js/453.419a5d54.chunk.js",
+    "static/media/PretendardVariable.woff2": "/mogakco-frontend/static/media/PretendardVariable.2bc582461caf4e05b51d.woff2",
+    "index.html": "/mogakco-frontend/index.html",
+    "main.cac7a327.css.map": "/mogakco-frontend/static/css/main.cac7a327.css.map",
+    "main.f99d2e0e.js.map": "/mogakco-frontend/static/js/main.f99d2e0e.js.map",
+    "453.419a5d54.chunk.js.map": "/mogakco-frontend/static/js/453.419a5d54.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a3dc69db.css",
-    "static/js/main.fa4ba9d9.js"
+    "static/css/main.cac7a327.css",
+    "static/js/main.f99d2e0e.js"
   ]
 }
